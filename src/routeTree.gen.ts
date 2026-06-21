@@ -9,38 +9,168 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DocsRouteImport } from './routes/docs'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DocsIndexRouteImport } from './routes/docs.index'
+import { Route as DocsQuickstartRouteImport } from './routes/docs.quickstart'
+import { Route as DocsModulesRouteImport } from './routes/docs.modules'
+import { Route as DocsMigrationRouteImport } from './routes/docs.migration'
+import { Route as DocsEvaluationRouteImport } from './routes/docs.evaluation'
+import { Route as DocsCoordinationRouteImport } from './routes/docs.coordination'
+import { Route as DocsCliRouteImport } from './routes/docs.cli'
+import { Route as DocsArchitectureRouteImport } from './routes/docs.architecture'
+import { Route as DocsApiRouteImport } from './routes/docs.api'
 
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocsIndexRoute = DocsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsQuickstartRoute = DocsQuickstartRouteImport.update({
+  id: '/quickstart',
+  path: '/quickstart',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsModulesRoute = DocsModulesRouteImport.update({
+  id: '/modules',
+  path: '/modules',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsMigrationRoute = DocsMigrationRouteImport.update({
+  id: '/migration',
+  path: '/migration',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsEvaluationRoute = DocsEvaluationRouteImport.update({
+  id: '/evaluation',
+  path: '/evaluation',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsCoordinationRoute = DocsCoordinationRouteImport.update({
+  id: '/coordination',
+  path: '/coordination',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsCliRoute = DocsCliRouteImport.update({
+  id: '/cli',
+  path: '/cli',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsArchitectureRoute = DocsArchitectureRouteImport.update({
+  id: '/architecture',
+  path: '/architecture',
+  getParentRoute: () => DocsRoute,
+} as any)
+const DocsApiRoute = DocsApiRouteImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => DocsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/docs': typeof DocsRouteWithChildren
+  '/docs/api': typeof DocsApiRoute
+  '/docs/architecture': typeof DocsArchitectureRoute
+  '/docs/cli': typeof DocsCliRoute
+  '/docs/coordination': typeof DocsCoordinationRoute
+  '/docs/evaluation': typeof DocsEvaluationRoute
+  '/docs/migration': typeof DocsMigrationRoute
+  '/docs/modules': typeof DocsModulesRoute
+  '/docs/quickstart': typeof DocsQuickstartRoute
+  '/docs/': typeof DocsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/docs/api': typeof DocsApiRoute
+  '/docs/architecture': typeof DocsArchitectureRoute
+  '/docs/cli': typeof DocsCliRoute
+  '/docs/coordination': typeof DocsCoordinationRoute
+  '/docs/evaluation': typeof DocsEvaluationRoute
+  '/docs/migration': typeof DocsMigrationRoute
+  '/docs/modules': typeof DocsModulesRoute
+  '/docs/quickstart': typeof DocsQuickstartRoute
+  '/docs': typeof DocsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/docs': typeof DocsRouteWithChildren
+  '/docs/api': typeof DocsApiRoute
+  '/docs/architecture': typeof DocsArchitectureRoute
+  '/docs/cli': typeof DocsCliRoute
+  '/docs/coordination': typeof DocsCoordinationRoute
+  '/docs/evaluation': typeof DocsEvaluationRoute
+  '/docs/migration': typeof DocsMigrationRoute
+  '/docs/modules': typeof DocsModulesRoute
+  '/docs/quickstart': typeof DocsQuickstartRoute
+  '/docs/': typeof DocsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/docs'
+    | '/docs/api'
+    | '/docs/architecture'
+    | '/docs/cli'
+    | '/docs/coordination'
+    | '/docs/evaluation'
+    | '/docs/migration'
+    | '/docs/modules'
+    | '/docs/quickstart'
+    | '/docs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/docs/api'
+    | '/docs/architecture'
+    | '/docs/cli'
+    | '/docs/coordination'
+    | '/docs/evaluation'
+    | '/docs/migration'
+    | '/docs/modules'
+    | '/docs/quickstart'
+    | '/docs'
+  id:
+    | '__root__'
+    | '/'
+    | '/docs'
+    | '/docs/api'
+    | '/docs/architecture'
+    | '/docs/cli'
+    | '/docs/coordination'
+    | '/docs/evaluation'
+    | '/docs/migration'
+    | '/docs/modules'
+    | '/docs/quickstart'
+    | '/docs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DocsRoute: typeof DocsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +178,101 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/docs/': {
+      id: '/docs/'
+      path: '/'
+      fullPath: '/docs/'
+      preLoaderRoute: typeof DocsIndexRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/quickstart': {
+      id: '/docs/quickstart'
+      path: '/quickstart'
+      fullPath: '/docs/quickstart'
+      preLoaderRoute: typeof DocsQuickstartRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/modules': {
+      id: '/docs/modules'
+      path: '/modules'
+      fullPath: '/docs/modules'
+      preLoaderRoute: typeof DocsModulesRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/migration': {
+      id: '/docs/migration'
+      path: '/migration'
+      fullPath: '/docs/migration'
+      preLoaderRoute: typeof DocsMigrationRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/evaluation': {
+      id: '/docs/evaluation'
+      path: '/evaluation'
+      fullPath: '/docs/evaluation'
+      preLoaderRoute: typeof DocsEvaluationRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/coordination': {
+      id: '/docs/coordination'
+      path: '/coordination'
+      fullPath: '/docs/coordination'
+      preLoaderRoute: typeof DocsCoordinationRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/cli': {
+      id: '/docs/cli'
+      path: '/cli'
+      fullPath: '/docs/cli'
+      preLoaderRoute: typeof DocsCliRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/architecture': {
+      id: '/docs/architecture'
+      path: '/architecture'
+      fullPath: '/docs/architecture'
+      preLoaderRoute: typeof DocsArchitectureRouteImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/api': {
+      id: '/docs/api'
+      path: '/api'
+      fullPath: '/docs/api'
+      preLoaderRoute: typeof DocsApiRouteImport
+      parentRoute: typeof DocsRoute
+    }
   }
 }
 
+interface DocsRouteChildren {
+  DocsApiRoute: typeof DocsApiRoute
+  DocsArchitectureRoute: typeof DocsArchitectureRoute
+  DocsCliRoute: typeof DocsCliRoute
+  DocsCoordinationRoute: typeof DocsCoordinationRoute
+  DocsEvaluationRoute: typeof DocsEvaluationRoute
+  DocsMigrationRoute: typeof DocsMigrationRoute
+  DocsModulesRoute: typeof DocsModulesRoute
+  DocsQuickstartRoute: typeof DocsQuickstartRoute
+  DocsIndexRoute: typeof DocsIndexRoute
+}
+
+const DocsRouteChildren: DocsRouteChildren = {
+  DocsApiRoute: DocsApiRoute,
+  DocsArchitectureRoute: DocsArchitectureRoute,
+  DocsCliRoute: DocsCliRoute,
+  DocsCoordinationRoute: DocsCoordinationRoute,
+  DocsEvaluationRoute: DocsEvaluationRoute,
+  DocsMigrationRoute: DocsMigrationRoute,
+  DocsModulesRoute: DocsModulesRoute,
+  DocsQuickstartRoute: DocsQuickstartRoute,
+  DocsIndexRoute: DocsIndexRoute,
+}
+
+const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DocsRoute: DocsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
