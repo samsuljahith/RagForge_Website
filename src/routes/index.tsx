@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Github,
@@ -118,9 +118,16 @@ function Navbar() {
           <a href="#problem" className="hover:text-foreground transition">Problem</a>
           <a href="#how" className="hover:text-foreground transition">How it works</a>
           <a href="#inside" className="hover:text-foreground transition">Modules</a>
+          <Link to="/docs" className="hover:text-foreground transition">Docs</Link>
           <a href="#api" className="hover:text-foreground transition">API</a>
         </div>
         <div className="flex items-center gap-3">
+          <Link
+            to="/docs"
+            className="hidden rounded-full border border-border bg-card/60 px-4 py-2 text-sm font-medium text-foreground hover:border-primary/60 hover:text-primary transition md:inline-flex"
+          >
+            Docs
+          </Link>
           <a
             href={GITHUB}
             target="_blank"
