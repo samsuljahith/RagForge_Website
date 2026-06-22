@@ -24,7 +24,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import mascot from "@/assets/mascot.png";
-import samsul from "@/assets/samsul.png.asset.json";
+import samsul from "@/assets/samsul.png";
 import { Flow3D, type FlowStep } from "@/components/Flow3D";
 import { Database, Boxes, Brain, Filter, Quote, Linkedin, Mail, FileWarning, Microscope, Rocket, Users2, GitMerge, Scale } from "lucide-react";
 
@@ -579,7 +579,7 @@ function AboutMaker() {
       <div data-reveal className="card-forge p-7 md:p-10">
         <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
           <img
-            src={samsul.url}
+            src={samsul}
             alt="Samsul Jahith"
             width={88}
             height={88}
