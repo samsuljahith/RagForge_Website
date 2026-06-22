@@ -382,6 +382,59 @@ function MigrateBlind() {
           </div>
           <Flow3D steps={MIGRATE_FLOW} />
         </div>
+        <div className="relative mt-10 border-t border-border/60 pt-8">
+          <div className="mb-5 text-center text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            A real run, not a mockup
+          </div>
+          <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-background/40 p-6">
+            <p className="text-sm text-muted-foreground">
+              Migrated RAGForge's own knowledge base (its README, 13 chunks) from{" "}
+              <code className="text-foreground">bge-small-en-v1.5</code> to{" "}
+              <code className="text-foreground">all-MiniLM-L6-v2</code> — gated on 6 real questions,
+              top_k=3.
+            </p>
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
+                    <th className="pb-2 font-medium">Metric</th>
+                    <th className="pb-2 font-medium text-right">bge-small (old)</th>
+                    <th className="pb-2 font-medium text-right">MiniLM-L6 (new)</th>
+                    <th className="pb-2 font-medium text-right">&Delta;</th>
+                  </tr>
+                </thead>
+                <tbody className="font-mono">
+                  <tr className="border-t border-border/60">
+                    <td className="py-2">recall@3</td>
+                    <td className="py-2 text-right">0.833</td>
+                    <td className="py-2 text-right">0.833</td>
+                    <td className="py-2 text-right text-muted-foreground">0.000</td>
+                  </tr>
+                  <tr className="border-t border-border/60">
+                    <td className="py-2">MRR</td>
+                    <td className="py-2 text-right">0.833</td>
+                    <td className="py-2 text-right">0.750</td>
+                    <td className="py-2 text-right font-semibold text-foreground">-0.083</td>
+                  </tr>
+                  <tr className="border-t border-border/60">
+                    <td className="py-2">hit rate</td>
+                    <td className="py-2 text-right">0.833</td>
+                    <td className="py-2 text-right">0.833</td>
+                    <td className="py-2 text-right text-muted-foreground">0.000</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-4 text-sm">
+              <span className="font-semibold text-primary">Cutover rejected.</span>{" "}
+              <span className="text-muted-foreground">
+                The newer model regressed on MRR, so the gate blocked the swap automatically —
+                only the 6 referenced chunks were re-embedded before that decision, not the full
+                corpus.
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
