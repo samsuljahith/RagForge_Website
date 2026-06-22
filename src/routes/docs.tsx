@@ -32,6 +32,7 @@ const NAV: Array<{ section: string; items: Array<{ to: string; label: string }> 
       { to: "/docs/cli", label: "CLI reference" },
       { to: "/docs/api", label: "HTTP API" },
       { to: "/docs/modules", label: "Python modules" },
+      { to: "/docs/benchmarks", label: "Benchmarks" },
     ],
   },
   {

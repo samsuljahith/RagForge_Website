@@ -18,6 +18,7 @@ import { Route as DocsMigrationRouteImport } from './routes/docs.migration'
 import { Route as DocsEvaluationRouteImport } from './routes/docs.evaluation'
 import { Route as DocsCoordinationRouteImport } from './routes/docs.coordination'
 import { Route as DocsCliRouteImport } from './routes/docs.cli'
+import { Route as DocsBenchmarksRouteImport } from './routes/docs.benchmarks'
 import { Route as DocsArchitectureRouteImport } from './routes/docs.architecture'
 import { Route as DocsApiRouteImport } from './routes/docs.api'
 
@@ -66,6 +67,11 @@ const DocsCliRoute = DocsCliRouteImport.update({
   path: '/cli',
   getParentRoute: () => DocsRoute,
 } as any)
+const DocsBenchmarksRoute = DocsBenchmarksRouteImport.update({
+  id: '/benchmarks',
+  path: '/benchmarks',
+  getParentRoute: () => DocsRoute,
+} as any)
 const DocsArchitectureRoute = DocsArchitectureRouteImport.update({
   id: '/architecture',
   path: '/architecture',
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/docs': typeof DocsRouteWithChildren
   '/docs/api': typeof DocsApiRoute
   '/docs/architecture': typeof DocsArchitectureRoute
+  '/docs/benchmarks': typeof DocsBenchmarksRoute
   '/docs/cli': typeof DocsCliRoute
   '/docs/coordination': typeof DocsCoordinationRoute
   '/docs/evaluation': typeof DocsEvaluationRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/docs/api': typeof DocsApiRoute
   '/docs/architecture': typeof DocsArchitectureRoute
+  '/docs/benchmarks': typeof DocsBenchmarksRoute
   '/docs/cli': typeof DocsCliRoute
   '/docs/coordination': typeof DocsCoordinationRoute
   '/docs/evaluation': typeof DocsEvaluationRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/docs': typeof DocsRouteWithChildren
   '/docs/api': typeof DocsApiRoute
   '/docs/architecture': typeof DocsArchitectureRoute
+  '/docs/benchmarks': typeof DocsBenchmarksRoute
   '/docs/cli': typeof DocsCliRoute
   '/docs/coordination': typeof DocsCoordinationRoute
   '/docs/evaluation': typeof DocsEvaluationRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/docs/api'
     | '/docs/architecture'
+    | '/docs/benchmarks'
     | '/docs/cli'
     | '/docs/coordination'
     | '/docs/evaluation'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
     | '/'
     | '/docs/api'
     | '/docs/architecture'
+    | '/docs/benchmarks'
     | '/docs/cli'
     | '/docs/coordination'
     | '/docs/evaluation'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/docs/api'
     | '/docs/architecture'
+    | '/docs/benchmarks'
     | '/docs/cli'
     | '/docs/coordination'
     | '/docs/evaluation'
@@ -227,6 +239,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsCliRouteImport
       parentRoute: typeof DocsRoute
     }
+    '/docs/benchmarks': {
+      id: '/docs/benchmarks'
+      path: '/benchmarks'
+      fullPath: '/docs/benchmarks'
+      preLoaderRoute: typeof DocsBenchmarksRouteImport
+      parentRoute: typeof DocsRoute
+    }
     '/docs/architecture': {
       id: '/docs/architecture'
       path: '/architecture'
@@ -247,6 +266,7 @@ declare module '@tanstack/react-router' {
 interface DocsRouteChildren {
   DocsApiRoute: typeof DocsApiRoute
   DocsArchitectureRoute: typeof DocsArchitectureRoute
+  DocsBenchmarksRoute: typeof DocsBenchmarksRoute
   DocsCliRoute: typeof DocsCliRoute
   DocsCoordinationRoute: typeof DocsCoordinationRoute
   DocsEvaluationRoute: typeof DocsEvaluationRoute
@@ -259,6 +279,7 @@ interface DocsRouteChildren {
 const DocsRouteChildren: DocsRouteChildren = {
   DocsApiRoute: DocsApiRoute,
   DocsArchitectureRoute: DocsArchitectureRoute,
+  DocsBenchmarksRoute: DocsBenchmarksRoute,
   DocsCliRoute: DocsCliRoute,
   DocsCoordinationRoute: DocsCoordinationRoute,
   DocsEvaluationRoute: DocsEvaluationRoute,
@@ -277,13 +298,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
