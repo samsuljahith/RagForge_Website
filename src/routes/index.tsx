@@ -24,6 +24,9 @@ import {
   Sparkles,
 } from "lucide-react";
 import mascot from "@/assets/mascot.png";
+import samsul from "@/assets/samsul.png.asset.json";
+import { Flow3D, type FlowStep } from "@/components/Flow3D";
+import { Database, Boxes, Brain, Filter, Quote, Linkedin, Mail, FileWarning, Microscope, Rocket, Users2, GitMerge, Scale } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
