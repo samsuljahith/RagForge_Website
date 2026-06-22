@@ -573,6 +573,28 @@ function AgentFlowSection() {
   );
 }
 
+// Built client-side only from parts, so the address never appears as plain
+// text in the server-rendered HTML scrapers read.
+function ObfuscatedEmail({ className }: { className?: string }) {
+  const [address, setAddress] = useState<string | null>(null);
+
+  useEffect(() => {
+    const user = ["s", "a", "m", "s", "u", "l", "j", "a", "h", "i", "t", "h"].join("");
+    const domain = ["gmail", "com"].join(".");
+    setAddress(`${user}@${domain}`);
+  }, []);
+
+  return (
+    <a
+      href={address ? `mailto:${address}` : undefined}
+      className={className}
+      aria-label="Email"
+    >
+      <Mail className="h-3.5 w-3.5" /> {address ?? "Email"}
+    </a>
+  );
+}
+
 function AboutMaker() {
   return (
     <section className="mx-auto max-w-3xl px-6 pb-20">
@@ -601,9 +623,7 @@ function AboutMaker() {
               <a href="https://www.linkedin.com/in/samsul-jahith" target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition">
                 <Linkedin className="h-3.5 w-3.5" /> LinkedIn
               </a>
-              <a href="mailto:samsuljahith@gmail.com" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition">
-                <Mail className="h-3.5 w-3.5" /> samsuljahith@gmail.com
-              </a>
+              <ObfuscatedEmail className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition" />
             </div>
           </div>
         </div>
