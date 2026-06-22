@@ -376,6 +376,12 @@ function MigrateBlind() {
             ))}
           </div>
         </div>
+        <div className="relative mt-10 border-t border-border/60 pt-8">
+          <div className="mb-5 text-center text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            How the safe migration flows
+          </div>
+          <Flow3D steps={MIGRATE_FLOW} />
+        </div>
       </div>
     </section>
   );
