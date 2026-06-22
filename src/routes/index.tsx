@@ -22,6 +22,7 @@ import {
   HelpCircle,
   Coins,
   Sparkles,
+  CircleX,
 } from "lucide-react";
 import mascot from "@/assets/mascot.png";
 import samsul from "@/assets/samsul.png";
@@ -335,6 +336,15 @@ const MIGRATE_FLOW: FlowStep[] = [
   { icon: GitMerge, label: "Hot-set first", sub: "Cheap cutover" },
 ];
 
+// Real run: BeIR/SciFact, 5,183 docs, 300 labelled queries, full corpus
+// (one doc = one chunk). all-MiniLM-L6-v2 (baseline) vs
+// paraphrase-MiniLM-L3-v2 (candidate). Gate verdict: NO_GO.
+const MIGRATION_BENCHMARK: Array<{ metric: string; old: number; new: number }> = [
+  { metric: "recall@5", old: 0.738, new: 0.575 },
+  { metric: "recall@10", old: 0.783, new: 0.649 },
+  { metric: "MRR", old: 0.600, new: 0.468 },
+];
+
 function MigrateBlind() {
   const steps = [
     { n: "01", t: "Test on your corpus", d: "Freeze your real queries as a golden set, then score the new embedding model against your current one on recall@k, precision@k, and MRR — on YOUR corpus." },
@@ -389,6 +399,67 @@ function MigrateBlind() {
           </p>
           <div className="mx-auto mt-4 max-w-md rounded-xl border border-border bg-background/60 px-4 py-3 text-center font-mono text-xs text-foreground/80">
             ragforge migrate gate my-kb golden.json --old default --new openai --metric recall_at_k
+          </div>
+        </div>
+        <div className="relative mt-10 border-t border-border/60 pt-8">
+          <div className="mb-5 text-center text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            Real benchmark
+          </div>
+          <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-background/40 p-6 sm:p-8">
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-red-500/40 bg-red-500/10 px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wide text-red-400">
+                <CircleX className="h-3.5 w-3.5" /> NO_GO — migration blocked
+              </span>
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-sm bg-primary" /> all-MiniLM-L6-v2 (baseline)
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-sm bg-red-500/60" /> paraphrase-MiniLM-L3-v2 (candidate)
+              </span>
+            </div>
+
+            <div className="mt-6 flex items-end justify-center gap-6 sm:gap-10">
+              {MIGRATION_BENCHMARK.map((d) => (
+                <div key={d.metric} className="flex flex-col items-center">
+                  <div className="flex h-44 items-end gap-1.5 border-b border-border/60 sm:h-56 sm:gap-2.5">
+                    <div className="flex h-full flex-col items-center justify-end">
+                      <span className="mb-1 font-mono text-[10px] text-muted-foreground sm:text-xs">
+                        {d.old.toFixed(3)}
+                      </span>
+                      <div
+                        className="w-6 rounded-t-sm bg-primary sm:w-9"
+                        style={{ height: `${d.old * 100}%` }}
+                      />
+                    </div>
+                    <div className="flex h-full flex-col items-center justify-end">
+                      <span className="mb-1 font-mono text-[10px] text-red-400 sm:text-xs">
+                        {d.new.toFixed(3)}
+                      </span>
+                      <div
+                        className="w-6 rounded-t-sm bg-red-500/60 sm:w-9"
+                        style={{ height: `${d.new * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-2 font-mono text-[11px] uppercase tracking-wide text-muted-foreground sm:text-xs">
+                    {d.metric}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground">
+              Real run on SciFact (5,183 docs, 300 labelled queries). We compared{" "}
+              <span className="text-foreground">all-MiniLM-L6-v2</span> against a smaller candidate (
+              <span className="text-foreground">paraphrase-MiniLM-L3-v2</span>). The candidate regressed on
+              every metric — recall@5 fell 16 points — so RAGForge's gate returned{" "}
+              <span className="font-semibold text-red-400">NO_GO</span> and blocked the migration before any
+              full re-embed. That's the point: the gate turns "is this model actually better on our data?"
+              into a measured, automatic decision.
+            </p>
           </div>
         </div>
       </div>
