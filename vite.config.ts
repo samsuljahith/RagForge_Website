@@ -12,4 +12,10 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Outside the Lovable sandbox, nitro is off by default (Vite-only build with
+  // no server bundling), which is why self-hosted deploys 404 on every route.
+  // Force it on and target Vercel's Build Output API explicitly.
+  nitro: {
+    preset: "vercel",
+  },
 });
