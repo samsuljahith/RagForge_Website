@@ -74,10 +74,10 @@ function Page() {
           ["Haystack (Hybrid pipeline)", "0.804", "0.621", "0.664", "0.87"],
         ]}
       />
-      <P className="text-sm">
+      <p className="mt-3 text-sm text-muted-foreground">
         * LLM-judge faithfulness on 200 generated answers — gpt-4o as judge. Higher is better on all
         four metrics.
-      </P>
+      </p>
 
       <H2 id="latency">End-to-end latency</H2>
       <P>
