@@ -24,6 +24,9 @@ import {
   Sparkles,
 } from "lucide-react";
 import mascot from "@/assets/mascot.png";
+import samsul from "@/assets/samsul.png.asset.json";
+import { Flow3D, type FlowStep } from "@/components/Flow3D";
+import { Database, Boxes, Brain, Filter, Quote, Linkedin, Mail, FileWarning, Microscope, Rocket, Users2, GitMerge, Scale } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -259,38 +262,78 @@ function Problem() {
   );
 }
 
-const PIPELINE = [
-  { icon: FileText, label: "Parse", desc: "Read your files — PDF, Word, HTML, and more." },
-  { icon: LayoutGrid, label: "Chunk", desc: "Split smartly. Tables and code stay whole." },
-  { icon: Search, label: "Search", desc: "Hybrid retrieval (meaning + keywords) with reranking." },
-  { icon: MessageSquare, label: "Answer", desc: "Grounded replies that cite their sources." },
+const PIPELINE: FlowStep[] = [
+  { icon: FileText, label: "Parse", sub: "Read files" },
+  { icon: LayoutGrid, label: "Chunk", sub: "Split smart" },
+  { icon: Database, label: "Embed", sub: "Store vectors" },
+  { icon: Search, label: "Search", sub: "Hybrid + rerank" },
+  { icon: MessageSquare, label: "Answer", sub: "With sources" },
 ];
 
 function HowItWorks() {
   return (
-    <Section id="how" eyebrow="How it works" title="One workshop for everything RAG">
-      <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-stretch">
-        {PIPELINE.map((step, i) => (
-          <div key={step.label} className="flex flex-1 items-center gap-4">
-            <div data-reveal className="card-forge card-forge-hover flex-1 p-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
-                <step.icon className="h-5 w-5" />
+    <Section id="how" eyebrow="How it works" title="One workshop for everything RAG" subtitle="Watch your question travel through the forge — each stage hands clean data to the next.">
+      <div data-reveal className="card-forge p-6 md:p-10">
+        {/* INPUT → PIPELINE → OUTPUT */}
+        <div className="grid gap-6 md:grid-cols-[180px_1fr_180px] md:items-center">
+          <div className="flow-scene">
+            <div className="flow-node flow-node-alt rounded-2xl p-4 text-center">
+              <div className="flow-cube mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-secondary/25 text-secondary">
+                <FileText className="h-5 w-5" />
               </div>
-              <div className="mt-4 font-display text-lg font-bold">{step.label}</div>
-              <p className="mt-1 text-sm text-muted-foreground">{step.desc}</p>
+              <div className="mt-3 font-display text-sm font-bold">Your documents</div>
+              <div className="text-[11px] text-muted-foreground">PDF · Word · HTML</div>
             </div>
-            {i < PIPELINE.length - 1 && (
-              <ArrowRight className="hidden h-5 w-5 shrink-0 text-primary/70 md:block" />
-            )}
           </div>
-        ))}
+          <Flow3D steps={PIPELINE} />
+          <div className="flow-scene">
+            <div className="flow-node rounded-2xl p-4 text-center">
+              <div className="flow-cube mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-primary/25 text-primary">
+                <MessageSquare className="h-5 w-5" />
+              </div>
+              <div className="mt-3 font-display text-sm font-bold">Grounded answer</div>
+              <div className="text-[11px] text-muted-foreground">with cited sources</div>
+            </div>
+          </div>
+        </div>
+        <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-muted-foreground">
+          Everything is exposed over a simple HTTP API, so you can use it from any language — not just Python.
+        </p>
       </div>
-      <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-muted-foreground">
-        Everything is exposed over a simple HTTP API, so you can use it from any language — not just Python.
-      </p>
     </Section>
   );
 }
+
+const PROBLEM_FLOW: FlowStep[] = [
+  { icon: FileWarning, label: "Bad parse", sub: "Tables broken" },
+  { icon: AlertTriangle, label: "Wrong chunks", sub: "Context lost" },
+  { icon: HelpCircle, label: "Made-up answer", sub: "No sources" },
+  { icon: Coins, label: "$$$ wasted", sub: "Tokens burned" },
+];
+
+function ProblemFlow() {
+  return (
+    <Section eyebrow="What goes wrong" title="The broken pipeline most people end up with" subtitle="Skip any one of these stages and the next one inherits the mess.">
+      <div data-reveal className="card-forge p-6 md:p-10">
+        <Flow3D steps={PROBLEM_FLOW} accent="purple" />
+      </div>
+    </Section>
+  );
+}
+
+const AGENT_FLOW: FlowStep[] = [
+  { icon: Users2, label: "Agents", sub: "Share a board" },
+  { icon: LayoutGrid, label: "Blackboard", sub: "Common state" },
+  { icon: Filter, label: "Reuse work", sub: "No re-asking" },
+  { icon: Coins, label: "Lower cost", sub: "Fewer tokens" },
+];
+
+const MIGRATE_FLOW: FlowStep[] = [
+  { icon: Database, label: "Your queries", sub: "Real logs" },
+  { icon: Microscope, label: "Golden set", sub: "Frozen truth" },
+  { icon: Scale, label: "Compare", sub: "Old vs new" },
+  { icon: GitMerge, label: "Hot-set first", sub: "Cheap cutover" },
+];
 
 function MigrateBlind() {
   const steps = [
@@ -332,6 +375,12 @@ function MigrateBlind() {
               </div>
             ))}
           </div>
+        </div>
+        <div className="relative mt-10 border-t border-border/60 pt-8">
+          <div className="mb-5 text-center text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            How the safe migration flows
+          </div>
+          <Flow3D steps={MIGRATE_FLOW} />
         </div>
       </div>
     </section>
@@ -514,6 +563,55 @@ function FinalCta() {
   );
 }
 
+function AgentFlowSection() {
+  return (
+    <Section eyebrow="Multi-agent, plain English" title="How agents stop wasting your money" subtitle="Instead of agents repeating each other through chat, they read and write to one shared board.">
+      <div data-reveal className="card-forge p-6 md:p-10">
+        <Flow3D steps={AGENT_FLOW} accent="purple" />
+      </div>
+    </Section>
+  );
+}
+
+function AboutMaker() {
+  return (
+    <section className="mx-auto max-w-3xl px-6 pb-20">
+      <div data-reveal className="card-forge p-7 md:p-10">
+        <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
+          <img
+            src={samsul.url}
+            alt="Samsul Jahith"
+            width={88}
+            height={88}
+            className="h-22 w-22 shrink-0 rounded-full border-2 border-primary/40 object-cover shadow-[0_0_30px_-8px_oklch(0.72_0.19_45/0.6)]"
+            style={{ height: 88, width: 88 }}
+          />
+          <div className="min-w-0">
+            <h3 className="font-display text-xl font-extrabold leading-tight">
+              Built by a developer who got tired of tool sprawl
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              RAGForge is built and maintained by <span className="text-foreground font-semibold">Samsul Jahith</span> — a developer working on open-source RAG tooling.
+              I built it to bring the messy parts of RAG into one place. Feedback and contributions are welcome.
+            </p>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+              <a href="https://github.com/samsuljahith" target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition">
+                <Github className="h-3.5 w-3.5" /> GitHub
+              </a>
+              <a href="https://www.linkedin.com/in/samsul-jahith" target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition">
+                <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+              </a>
+              <a href="mailto:samsuljahith@gmail.com" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition">
+                <Mail className="h-3.5 w-3.5" /> samsuljahith@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="border-t border-border/60">
@@ -541,12 +639,15 @@ function Landing() {
       <main>
         <Hero />
         <Problem />
+        <ProblemFlow />
         <HowItWorks />
         <MigrateBlind />
         <Inside />
+        <AgentFlowSection />
         <Why />
         <ApiTabs />
         <FinalCta />
+        <AboutMaker />
       </main>
       <Footer />
     </div>
