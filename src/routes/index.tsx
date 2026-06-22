@@ -563,6 +563,55 @@ function FinalCta() {
   );
 }
 
+function AgentFlowSection() {
+  return (
+    <Section eyebrow="Multi-agent, plain English" title="How agents stop wasting your money" subtitle="Instead of agents repeating each other through chat, they read and write to one shared board.">
+      <div data-reveal className="card-forge p-6 md:p-10">
+        <Flow3D steps={AGENT_FLOW} accent="purple" />
+      </div>
+    </Section>
+  );
+}
+
+function AboutMaker() {
+  return (
+    <section className="mx-auto max-w-3xl px-6 pb-20">
+      <div data-reveal className="card-forge p-7 md:p-10">
+        <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
+          <img
+            src={samsul.url}
+            alt="Samsul Jahith"
+            width={88}
+            height={88}
+            className="h-22 w-22 shrink-0 rounded-full border-2 border-primary/40 object-cover shadow-[0_0_30px_-8px_oklch(0.72_0.19_45/0.6)]"
+            style={{ height: 88, width: 88 }}
+          />
+          <div className="min-w-0">
+            <h3 className="font-display text-xl font-extrabold leading-tight">
+              Built by a developer who got tired of tool sprawl
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              RAGForge is built and maintained by <span className="text-foreground font-semibold">Samsul Jahith</span> — a developer working on open-source RAG tooling.
+              I built it to bring the messy parts of RAG into one place. Feedback and contributions are welcome.
+            </p>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+              <a href="https://github.com/samsuljahith" target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition">
+                <Github className="h-3.5 w-3.5" /> GitHub
+              </a>
+              <a href="https://www.linkedin.com/in/samsul-jahith" target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition">
+                <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+              </a>
+              <a href="mailto:samsuljahith@gmail.com" className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-3 py-1.5 text-xs font-medium hover:border-primary/60 hover:text-primary transition">
+                <Mail className="h-3.5 w-3.5" /> samsuljahith@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="border-t border-border/60">
@@ -590,12 +639,15 @@ function Landing() {
       <main>
         <Hero />
         <Problem />
+        <ProblemFlow />
         <HowItWorks />
         <MigrateBlind />
         <Inside />
+        <AgentFlowSection />
         <Why />
         <ApiTabs />
         <FinalCta />
+        <AboutMaker />
       </main>
       <Footer />
     </div>
